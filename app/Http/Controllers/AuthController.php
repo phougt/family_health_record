@@ -36,15 +36,14 @@ class AuthController extends Controller
                 'refresh_token' => $newRefreshToken,
                 'refresh_token_expiry' => $refreshTokenExpiry->toDateTimeString()
             ],
-            'Login successfully',
-            200
+            'Login successfully'
         );
     }
 
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        return ApiHelper::successResponse([], 'Logout successful', 200);
+        return ApiHelper::successResponse([], 'Logout successful');
     }
 
     public function refreshToken(Request $request)
@@ -75,8 +74,7 @@ class AuthController extends Controller
                 'refresh_token' => $newRefreshToken,
                 'refresh_token_expiry' => $refreshTokenExpiry->toDateTimeString()
             ],
-            'Token refreshed successfully',
-            200
+            'Token refreshed successfully'
         );
     }
 }
