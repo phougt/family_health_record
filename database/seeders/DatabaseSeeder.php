@@ -59,14 +59,18 @@ class DatabaseSeeder extends Seeder
         $user->groups()->attach($group->id, ['role_id' => $role->id]);
 
         $role->permissions()->createMany([
-            ['name' => 'group.view'],
+            ['name' => 'group.read'],
             ['name' => 'group.create'],
             ['name' => 'group.update'],
             ['name' => 'group.delete'],
-            ['name' => 'group.tag.view'],
-            ['name' => 'group.tag.create'],
-            ['name' => 'group.tag.update'],
-            ['name' => 'group.tag.delete'],
+            ['name' => 'tag.read'],
+            ['name' => 'tag.create'],
+            ['name' => 'tag.update'],
+            ['name' => 'tag.delete'],
+            ['name' => 'record-type.create'],
+            ['name' => 'record-type.update'],
+            ['name' => 'record-type.delete'],
+            ['name' => 'record-type.read'],
         ]);
     }
 }
