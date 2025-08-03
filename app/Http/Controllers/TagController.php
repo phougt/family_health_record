@@ -35,6 +35,27 @@ class TagController extends Controller
         );
     }
 
+    public function show(Request $request, $id)
+    {
+        $request->merge(['id' => $id]);
+        $tag = Tag::find($id);
+        $user = $request->user();
+        $userPermissions = $user->getPermissions($tag->group_id ?? 0);
+
+        if (!$userPermissions->contains('group.tag.view')) {
+            return ApiHelper::errorResponse('You do not have permission to view this tag', 403);
+        }
+
+        $request->validate([
+            'id' => 'required|exists:tags,id',
+        ]);
+
+        return ApiHelper::successResponse(
+            $tag,
+            'Tag retrieved successfully'
+        );
+    }
+
     public function store(Request $request)
     {
         $user = $request->user();
