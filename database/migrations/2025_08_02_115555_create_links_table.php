@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('invite_links', function (Blueprint $table) {
             $table->id();
-            $table->string('link')->unique();
+            $table->string('link')->unique()->index();
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict')->onUpdate('restrict');
             $table->timestamps();
             $table->softDeletes();
@@ -21,7 +21,7 @@ return new class extends Migration {
         Schema::create('record_links', function (Blueprint $table) {
             $table->id();
             $table->foreignId('record_id')->constrained('records')->onDelete('restrict')->onUpdate('restrict');
-            $table->string('link')->unique();
+            $table->string('link')->unique()->index();
             $table->timestamps();
             $table->softDeletes();
         });
