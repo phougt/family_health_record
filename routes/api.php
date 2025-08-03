@@ -12,9 +12,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'group', 'as' => 'group.'], function () {
             Route::group(['prefix' => 'tag', 'as' => 'tag.'], function () {
                 Route::get('/', [App\Http\Controllers\TagController::class, 'index'])->name('index');
-                Route::post('/', [App\Http\Controllers\TagController::class, 'store'])->name('store');
+                Route::get('/{id}', [App\Http\Controllers\TagController::class, 'read'])->name('read');
+                Route::post('/', [App\Http\Controllers\TagController::class, 'create'])->name('create');
                 Route::patch('/', [App\Http\Controllers\TagController::class, 'update'])->name('update');
-                Route::delete('/{id}', [App\Http\Controllers\TagController::class, 'destroy'])->name('destroy');
+                Route::delete('/{id}', [App\Http\Controllers\TagController::class, 'delete'])->name('delete');
             });
         });
 
