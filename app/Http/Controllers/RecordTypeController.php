@@ -12,7 +12,7 @@ class RecordTypeController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'group_id' => ['integer'],
+            'group_id' => ['required', 'integer'],
         ]);
 
         $user = $request->user();
@@ -36,7 +36,7 @@ class RecordTypeController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'group_id' => ['integer'],
+            'group_id' => ['required', 'integer'],
         ]);
 
         $user = $request->user();
@@ -74,7 +74,7 @@ class RecordTypeController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'id' => 'integer',
+            'id' => 'integer|required',
         ]);
 
         $recordType = RecordType::find($request->id);
@@ -115,7 +115,7 @@ class RecordTypeController extends Controller
     {
         $request->merge(['id' => $id]);
         $request->validate([
-            'id' => 'integer',
+            'id' => 'integer|required',
         ]);
 
         $recordType = RecordType::find($id);
@@ -135,7 +135,7 @@ class RecordTypeController extends Controller
     {
         $request->merge(['id' => $id]);
         $request->validate([
-            'id' => ['integer']
+            'id' => ['integer', 'required']
         ]);
 
         $recordType = RecordType::find($id);
