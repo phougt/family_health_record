@@ -52,12 +52,22 @@ class AuthController extends Controller
             'refresh_token' => 'required|string',
         ]);
 
-        $refreshToken = PersonalAccessToken::where('id', explode('|', $request->refresh_token)[0] ?? '')
+        $rawTokenParts = explode('|', $request->refresh_token);
+
+        if (count($rawTokenParts) !== 2) {
+            return ApiHelper::errorResponse('Refresh token is invalid', 401);
+        }
+
+        $id = $rawTokenParts[0];
+        $inputToken = $rawTokenParts[1];
+
+        $refreshToken = PersonalAccessToken::where('id', $id)
             ->where('expires_at', '>', now('UTC'))
             ->first();
+        $isValid = hash('sha256', $inputToken) === $refreshToken?->token ?? '';
 
-        if (!$refreshToken) {
-            return ApiHelper::errorResponse('No refresh token found', 401);
+        if (!$isValid) {
+            return ApiHelper::errorResponse('Refresh token is invalid', 401);
         }
 
         $user = $refreshToken->tokenable;
