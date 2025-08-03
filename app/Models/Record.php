@@ -2,13 +2,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Record extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'group_id',
         'records_type_id',
-        'record_prescriptions_id',
         'hospital_id',
         'doctor_id',
         'name',
@@ -36,11 +37,6 @@ class Record extends Model
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
-    }
-
-    public function recordPrescriptions()
-    {
-        return $this->hasMany(RecordPrescription::class, 'record_id');
     }
 
     public function tags()

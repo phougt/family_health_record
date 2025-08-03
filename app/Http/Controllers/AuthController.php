@@ -19,7 +19,7 @@ class AuthController extends Controller
 
         $user = User::where(['username' => $request->username])->first();
 
-        if (!Hash::check($request->password, $user->password)) {
+        if (!Hash::check($request->password, $user->password ?? '')) {
             return ApiHelper::errorResponse('Invalid credentials', 401);
         }
 
@@ -32,9 +32,9 @@ class AuthController extends Controller
         return ApiHelper::successResponse(
             [
                 'access_token' => $newAccessToken,
-                'access_token_expiry' => $accessTokenExpiry->toDateTimeString(),
+                'access_token_expiry' => $accessTokenExpiry,
                 'refresh_token' => $newRefreshToken,
-                'refresh_token_expiry' => $refreshTokenExpiry->toDateTimeString()
+                'refresh_token_expiry' => $refreshTokenExpiry
             ],
             'Login successfully'
         );
@@ -70,9 +70,9 @@ class AuthController extends Controller
         return ApiHelper::successResponse(
             [
                 'access_token' => $newAccessToken,
-                'access_token_expiry' => $accessTokenExpiry->toDateTimeString(),
+                'access_token_expiry' => $accessTokenExpiry,
                 'refresh_token' => $newRefreshToken,
-                'refresh_token_expiry' => $refreshTokenExpiry->toDateTimeString()
+                'refresh_token_expiry' => $refreshTokenExpiry
             ],
             'Token refreshed successfully'
         );

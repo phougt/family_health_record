@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('link')->unique();
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict')->onUpdate('restrict');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('record_links', function (Blueprint $table) {
@@ -22,6 +23,7 @@ return new class extends Migration {
             $table->foreignId('record_id')->constrained('records')->onDelete('restrict')->onUpdate('restrict');
             $table->string('link')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
         });
 
 
@@ -30,13 +31,7 @@ return new class extends Migration {
             $table->dateTime('next_visit_date')->nullable();
             $table->string('document')->nullable();
             $table->timestamps();
-        });
-
-        Schema::create('record_prescriptions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('record_id')->constrained('records')->onDelete('restrict')->onUpdate('restrict');
-            $table->foreignId('prescription_id')->constrained('prescriptions')->onDelete('restrict')->onUpdate('restrict');
-            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -47,6 +42,5 @@ return new class extends Migration {
     {
         Schema::dropIfExists('records');
         Schema::dropIfExists('record_types');
-        Schema::dropIfExists('record_prescriptions');
     }
 };

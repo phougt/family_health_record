@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('role_id')->constrained('group_roles')->onDelete('restrict')->onUpdate('restrict');
             $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

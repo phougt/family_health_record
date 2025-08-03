@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('color');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('user_tags', function (Blueprint $table) {
@@ -23,6 +24,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('users')->onDelete('restrict')->onUpdate('restrict');
             $table->foreignId('tag_id')->constrained('tags')->onDelete('restrict')->onUpdate('restrict');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('record_tags', function (Blueprint $table) {
@@ -30,6 +32,7 @@ return new class extends Migration {
             $table->foreignId('record_id')->constrained('records')->onDelete('restrict')->onUpdate('restrict');
             $table->foreignId('tag_id')->constrained('tags')->onDelete('restrict')->onUpdate('restrict');
             $table->timestamps();
+            $table->softDeletes();
         });
 
     }

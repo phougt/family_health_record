@@ -14,7 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('restrict')->onUpdate('restrict');
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreignId('role_id')->constrained('group_roles')->onDelete('restrict')->onUpdate('restrict');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

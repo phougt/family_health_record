@@ -2,9 +2,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class InviteLink extends Model
 {
+    use SoftDeletes;
     protected $fillable = ['link', 'group_id'];
 
     public function group()

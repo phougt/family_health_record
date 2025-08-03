@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\BloodType;
+use App\Models\Group;
+use App\Models\Tag;
+use App\Models\UserGroup;
+use App\Models\Permission;
 
 class User extends Authenticatable
 {
@@ -67,5 +72,21 @@ class User extends Authenticatable
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'user_tags');
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(GroupRole::class, 'user_groups', 'user_id', 'role_id');
+    }
+
+    public function getPermissions(int $groupId)
+    {
+        return $this->roles()
+            ->where('group_roles.group_id', $groupId)
+            ->with('permissions')
+            ->get()
+            ->pluck('permissions')
+            ->flatten()
+            ->pluck('name');
     }
 }

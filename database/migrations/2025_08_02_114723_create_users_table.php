@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('blood_type_id')->nullable()->constrained('blood_types')->onDelete('restrict')->onUpdate('restrict');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
