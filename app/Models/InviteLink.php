@@ -8,6 +8,7 @@ class InviteLink extends Model
 {
     use SoftDeletes;
     protected $fillable = ['link', 'group_id'];
+    protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
 
     public function group()
     {

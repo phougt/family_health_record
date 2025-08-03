@@ -8,6 +8,7 @@ class Tag extends Model
 {
     use SoftDeletes;
     protected $fillable = ['group_id', 'name', 'color'];
+    protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
 
     public function group()
     {

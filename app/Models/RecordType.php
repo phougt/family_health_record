@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RecordType extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'group_id'];
+    protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
 
     public function records()
     {

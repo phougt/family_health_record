@@ -8,6 +8,7 @@ class GroupRole extends Model
 {
     use SoftDeletes;
     protected $fillable = ['name', 'group_id'];
+    protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
 
     public function group()
     {

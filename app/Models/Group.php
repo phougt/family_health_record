@@ -8,6 +8,7 @@ class Group extends Model
 {
     use SoftDeletes;
     protected $fillable = ['group_profile', 'name', 'description'];
+    protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
 
     public function users()
     {

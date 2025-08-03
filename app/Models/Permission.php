@@ -8,6 +8,7 @@ class Permission extends Model
 {
     use SoftDeletes;
     protected $fillable = ['role_id', 'name'];
+    protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
 
     public function role()
     {

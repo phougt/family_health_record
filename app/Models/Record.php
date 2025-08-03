@@ -18,6 +18,7 @@ class Record extends Model
         'next_visit_date',
         'document'
     ];
+    protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
 
     public function group()
     {
