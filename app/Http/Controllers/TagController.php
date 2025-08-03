@@ -13,16 +13,16 @@ class TagController extends Controller
 {
     public function index(Request $request)
     {
+        $request->validate([
+            'group_id' => ['integer'],
+        ]);
+
         $user = $request->user();
         $userPermissions = $user->getPermissions($request->group_id ?? 0);
 
-        if (!$userPermissions->contains('group.tag.view')) {
+        if (!$userPermissions->contains('tag.read')) {
             return ApiHelper::errorResponse('You do not have permission to view tags in this group', 403);
         }
-
-        $request->validate([
-            'group_id' => 'required|exists:groups,id',
-        ]);
 
         $paginate = $request->input('page', 10);
 
@@ -35,20 +35,20 @@ class TagController extends Controller
         );
     }
 
-    public function read(Request $request, $id)
+    public function read(Request $request, int $id)
     {
         $request->merge(['id' => $id]);
+        $request->validate([
+            'id' => ['integer']
+        ]);
+
         $tag = Tag::find($id);
         $user = $request->user();
         $userPermissions = $user->getPermissions($tag->group_id ?? 0);
 
-        if (!$userPermissions->contains('group.tag.read')) {
+        if (!$userPermissions->contains('tag.read')) {
             return ApiHelper::errorResponse('You do not have permission to view this tag', 403);
         }
-
-        $request->validate([
-            'id' => 'required|exists:tags,id',
-        ]);
 
         return ApiHelper::successResponse(
             $tag,
@@ -58,10 +58,14 @@ class TagController extends Controller
 
     public function create(Request $request)
     {
+        $request->validate([
+            'group_id' => ['integer'],
+        ]);
+
         $user = $request->user();
         $userPermissions = $user->getPermissions($request->group_id ?? 0);
 
-        if (!$userPermissions->contains('group.tag.create')) {
+        if (!$userPermissions->contains('tag.create')) {
             return ApiHelper::errorResponse('You do not have permission to create tags in this group', 403);
         }
 
@@ -95,11 +99,15 @@ class TagController extends Controller
 
     public function update(Request $request)
     {
+        $request->validate([
+            'id' => 'integer',
+        ]);
+
         $tag = Tag::find($request->id);
         $user = $request->user();
         $userPermissions = $user->getPermissions($tag->group_id ?? 0);
 
-        if (!$userPermissions->contains('group.tag.update')) {
+        if (!$userPermissions->contains('tag.update')) {
             return ApiHelper::errorResponse('You do not have permission to update this tag', 403);
         }
 
@@ -128,20 +136,20 @@ class TagController extends Controller
         return ApiHelper::successResponse($tag, 'Tag updated successfully');
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Request $request, int $id)
     {
         $request->merge(['id' => $id]);
+        $request->validate([
+            'id' => 'integer',
+        ]);
+
         $tag = Tag::find($id);
         $user = $request->user();
         $userPermissions = $user->getPermissions($tag->group_id ?? 0);
 
-        if (!$userPermissions->contains('group.tag.delete')) {
+        if (!$userPermissions->contains('tag.delete')) {
             return ApiHelper::errorResponse('You do not have permission to delete this tag', 403);
         }
-
-        $request->validate([
-            'id' => 'required|exists:tags,id',
-        ]);
 
         $tag->delete();
 
