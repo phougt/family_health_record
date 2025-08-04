@@ -7,11 +7,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Hospital extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'group_id'];
     protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
 
     public function records()
     {
         return $this->hasMany(Record::class);
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
     }
 }
