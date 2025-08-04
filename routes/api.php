@@ -32,6 +32,13 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::post('/', [App\Http\Controllers\RecordLinkController::class, 'create'])->name('create');
                 Route::delete('/{id}', [App\Http\Controllers\RecordLinkController::class, 'delete'])->name('delete');
             });
+
+            Route::group(['prefix' => 'invite-link', 'as' => 'invite-link.'], function () {
+                Route::get('/', [App\Http\Controllers\InviteLinkController::class, 'index'])->name('index');
+                Route::get('/{id}', [App\Http\Controllers\InviteLinkController::class, 'read'])->name('read');
+                Route::post('/', [App\Http\Controllers\InviteLinkController::class, 'create'])->name('create');
+                Route::delete('/{id}', [App\Http\Controllers\InviteLinkController::class, 'delete'])->name('delete');
+            });
         });
 
         Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);

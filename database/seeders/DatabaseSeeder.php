@@ -78,6 +78,9 @@ class DatabaseSeeder extends Seeder
             ['name' => 'record-link.create'],
             ['name' => 'record-link.delete'],
             ['name' => 'record-link.read'],
+            ['name' => 'invite-link.create'],
+            ['name' => 'invite-link.delete'],
+            ['name' => 'invite-link.read'],
         ]);
 
         $doctor = Doctor::create([
