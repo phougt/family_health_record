@@ -25,6 +25,13 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::patch('/', [App\Http\Controllers\RecordTypeController::class, 'update'])->name('update');
                 Route::delete('/{id}', [App\Http\Controllers\RecordTypeController::class, 'delete'])->name('delete');
             });
+
+            Route::group(['prefix' => 'record-link', 'as' => 'record-type.'], function () {
+                Route::get('/', [App\Http\Controllers\RecordLinkController::class, 'index'])->name('index');
+                Route::get('/{id}', [App\Http\Controllers\RecordLinkController::class, 'read'])->name('read');
+                Route::post('/', [App\Http\Controllers\RecordLinkController::class, 'create'])->name('create');
+                Route::delete('/{id}', [App\Http\Controllers\RecordLinkController::class, 'delete'])->name('delete');
+            });
         });
 
         Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);

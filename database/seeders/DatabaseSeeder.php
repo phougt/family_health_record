@@ -2,10 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\Record;
+use App\Models\RecordType;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\GroupRole;
 use App\Models\Tag;
+use App\Models\Doctor;
+use App\Models\Hospital;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -71,6 +75,35 @@ class DatabaseSeeder extends Seeder
             ['name' => 'record-type.update'],
             ['name' => 'record-type.delete'],
             ['name' => 'record-type.read'],
+            ['name' => 'record-link.create'],
+            ['name' => 'record-link.delete'],
+            ['name' => 'record-link.read'],
+        ]);
+
+        $doctor = Doctor::create([
+            'name' => 'Dr. Smith',
+            'group_id' => $group->id
+        ]);
+
+        $hospital = Hospital::create([
+            'name' => 'Test Hospital',
+            'group_id' => $group->id
+        ]);
+
+        $recordType = RecordType::create([
+            'name' => 'Test Record Type',
+            'group_id' => $group->id
+        ]);
+
+        Record::create([
+            'group_id' => $group->id,
+            'records_type_id' => $recordType->id,
+            'hospital_id' => $hospital->id,
+            'doctor_id' => $doctor->id,
+            'name' => 'Test Record',
+            'note' => 'This is a test record',
+            'visit_date' => now(),
+            'next_visit_date' => now()->addDays(30),
         ]);
     }
 }
