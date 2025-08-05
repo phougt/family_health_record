@@ -82,6 +82,10 @@ class DatabaseSeeder extends Seeder
             ['slug' => 'invite-link.create', 'name' => 'Create Invite Link', 'group_id' => $group->id],
             ['slug' => 'invite-link.delete', 'name' => 'Delete Invite Link', 'group_id' => $group->id],
             ['slug' => 'invite-link.read', 'name' => 'Read Invite Link', 'group_id' => $group->id],
+            ['slug' => 'hospital.create', 'name' => 'Create Hospital', 'group_id' => $group->id],
+            ['slug' => 'hospital.update', 'name' => 'Update Hospital', 'group_id' => $group->id],
+            ['slug' => 'hospital.delete', 'name' => 'Delete Hospital', 'group_id' => $group->id],
+            ['slug' => 'hospital.read', 'name' => 'Read Hospital', 'group_id' => $group->id],
         ]);
 
         foreach (Permission::all() as $permission) {

@@ -19,6 +19,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/group/{group_id}/record-type', [App\Http\Controllers\RecordTypeController::class, 'create'])->name('record-type.create');
         Route::get('/group/{group_id}/invite-link', [App\Http\Controllers\InviteLinkController::class, 'index'])->name('invite-link.index');
         Route::post('/group/{group_id}/invite-link', [App\Http\Controllers\InviteLinkController::class, 'create'])->name('invite-link.create');
+        Route::get('/group/{group_id}/hospital', [App\Http\Controllers\HospitalController::class, 'index'])->name('hospital.index');
+        Route::post('/group/{group_id}/hospital', [App\Http\Controllers\HospitalController::class, 'create'])->name('hospital.create');
 
         Route::get('/tag/{id}', [App\Http\Controllers\TagController::class, 'read'])->name('tag.read');
         Route::put('/tag/{id}', [App\Http\Controllers\TagController::class, 'update'])->name('tag.update');
@@ -32,6 +34,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::delete('/record-link/{id}', [App\Http\Controllers\RecordLinkController::class, 'delete'])->name('record-link.delete');
 
         Route::delete('/invite-link/{id}', [App\Http\Controllers\InviteLinkController::class, 'delete'])->name('invite-link.delete');
+
+        Route::get('/hospital/{id}', [App\Http\Controllers\HospitalController::class, 'read'])->name('hospital.read');
+        Route::put('/hospital/{id}', [App\Http\Controllers\HospitalController::class, 'update'])->name('hospital.update');
+        Route::delete('/hospital/{id}', [App\Http\Controllers\HospitalController::class, 'delete'])->name('hospital.delete');
 
         Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
     });
