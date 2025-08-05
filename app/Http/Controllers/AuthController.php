@@ -10,6 +10,41 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
+    public function signup(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|unique:users,username',
+            'password' => 'required|string|min:8',
+            'email' => 'required|email|unique:users,email',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+        ]);
+
+        $user = User::create([
+            'username' => $request->username,
+            'password' => $request->password,
+            'email' => $request->email,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+        ]);
+
+        $user->tokens()->delete();
+        $accessTokenExpiry = now('UTC')->addDays(7);
+        $refreshTokenExpiry = now('UTC')->addDays(14);
+        $newAccessToken = $user->createToken('access_token', [], $accessTokenExpiry)->plainTextToken;
+        $newRefreshToken = $user->createToken('refresh_token', [], $refreshTokenExpiry)->plainTextToken;
+
+        return ApiHelper::successResponse(
+            [
+                'access_token' => $newAccessToken,
+                'access_token_expiry' => $accessTokenExpiry,
+                'refresh_token' => $newRefreshToken,
+                'refresh_token_expiry' => $refreshTokenExpiry
+            ],
+            'User registered successfully'
+        );
+    }
+
     public function login(Request $request)
     {
         $request->validate([
