@@ -10,6 +10,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/refresh-token', [App\Http\Controllers\AuthController::class, 'refreshToken']);
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/user', [App\Http\Controllers\UserController::class, 'read'])->name('user.read');
+        Route::put('/user', [App\Http\Controllers\UserController::class, 'update'])->name('user.update');
+
         Route::get('/group/{group_id}/tag', [App\Http\Controllers\TagController::class, 'index'])->name('tag.index');
         Route::post('/group/{group_id}/tag', [App\Http\Controllers\TagController::class, 'create'])->name('tag.create');
         Route::get('/group/{group_id}/record-type', [App\Http\Controllers\RecordTypeController::class, 'index'])->name('record-type.index');
