@@ -11,32 +11,9 @@ use App\Models\RecordLink;
 
 class RecordLinkController extends Controller
 {
-    public function index(Request $request)
+    public function create(Request $request, int $record_id)
     {
-        $request->validate([
-            'group_id' => ['required', 'integer'],
-        ]);
-
-        $user = $request->user();
-        $userPermissions = $user->getPermissions($request->group_id ?? 0);
-
-        if (!$userPermissions->contains('record-link.read')) {
-            return ApiHelper::errorResponse('You do not have permission to view record links in this group', 403);
-        }
-
-        $paginate = $request->input('page', 10);
-        $recordLinks = RecordLink::whereHas('record', function ($query) use ($request) {
-            $query->where('group_id', $request->group_id);
-        })->paginate($paginate);
-
-        return ApiHelper::successResponse(
-            $recordLinks,
-            'Record links retrieved successfully'
-        );
-    }
-
-    public function create(Request $request)
-    {
+        $request->merge(['record_id' => $record_id]);
         $request->validate([
             'record_id' => ['required', 'integer']
         ]);
@@ -63,27 +40,6 @@ class RecordLinkController extends Controller
         return ApiHelper::successResponse(
             $recordLink,
             'Record link created successfully'
-        );
-    }
-
-    public function read(Request $request, int $id)
-    {
-        $request->merge(['id' => $id]);
-        $request->validate([
-            'id' => ['required', 'integer']
-        ]);
-
-        $recordLink = RecordLink::find($id);
-        $user = $request->user();
-        $userPermissions = $user->getPermissions($recordLink->record->group_id ?? 0);
-
-        if (!$userPermissions->contains('record-link.read')) {
-            return ApiHelper::errorResponse('You do not have permission to view this record link', 403);
-        }
-
-        return ApiHelper::successResponse(
-            $recordLink,
-            'Record link retrieved successfully'
         );
     }
 

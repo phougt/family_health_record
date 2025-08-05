@@ -12,8 +12,18 @@ return new class extends Migration {
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->constrained('group_roles')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreignId('group_id')->constrained('groups')->onDelete('restrict')->onUpdate('restrict');
             $table->string('name');
+            $table->string('slug');
+            $table->string('description')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('group_role_permissions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('role_id')->constrained('group_roles')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreignId('permission_id')->constrained('permissions')->onDelete('restrict')->onUpdate('restrict');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,5 +35,6 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('permissions');
+        Schema::dropIfExists('group_role_permissions');
     }
 };

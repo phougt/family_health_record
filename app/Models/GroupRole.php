@@ -17,6 +17,6 @@ class GroupRole extends Model
 
     public function permissions()
     {
-        return $this->hasMany(Permission::class, 'role_id');
+        return $this->belongsToMany(Permission::class, 'group_role_permissions', 'role_id', 'permission_id');
     }
 }

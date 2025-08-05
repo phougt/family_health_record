@@ -87,6 +87,6 @@ class User extends Authenticatable
             ->get()
             ->pluck('permissions')
             ->flatten()
-            ->pluck('name');
+            ->pluck('slug');
     }
 }

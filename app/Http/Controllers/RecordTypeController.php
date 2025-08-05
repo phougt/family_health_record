@@ -9,8 +9,9 @@ use App\Models\RecordType;
 
 class RecordTypeController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, int $group_id)
     {
+        $request->merge(['group_id' => $group_id]);
         $request->validate([
             'group_id' => ['required', 'integer'],
         ]);
@@ -33,8 +34,9 @@ class RecordTypeController extends Controller
         );
     }
 
-    public function create(Request $request)
+    public function create(Request $request, int $group_id)
     {
+        $request->merge(['group_id' => $group_id]);
         $request->validate([
             'group_id' => ['required', 'integer'],
         ]);
@@ -71,8 +73,9 @@ class RecordTypeController extends Controller
         );
     }
 
-    public function update(Request $request)
+    public function update(Request $request, int $id)
     {
+        $request->merge(['id' => $id]);
         $request->validate([
             'id' => 'integer|required',
         ]);

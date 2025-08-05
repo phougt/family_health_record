@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
 use App\Models\Record;
 use App\Models\RecordType;
 use App\Models\User;
@@ -62,26 +63,30 @@ class DatabaseSeeder extends Seeder
 
         $user->groups()->attach($group->id, ['role_id' => $role->id]);
 
-        $role->permissions()->createMany([
-            ['name' => 'group.read'],
-            ['name' => 'group.create'],
-            ['name' => 'group.update'],
-            ['name' => 'group.delete'],
-            ['name' => 'tag.read'],
-            ['name' => 'tag.create'],
-            ['name' => 'tag.update'],
-            ['name' => 'tag.delete'],
-            ['name' => 'record-type.create'],
-            ['name' => 'record-type.update'],
-            ['name' => 'record-type.delete'],
-            ['name' => 'record-type.read'],
-            ['name' => 'record-link.create'],
-            ['name' => 'record-link.delete'],
-            ['name' => 'record-link.read'],
-            ['name' => 'invite-link.create'],
-            ['name' => 'invite-link.delete'],
-            ['name' => 'invite-link.read'],
+        Permission::insert([
+            ['slug' => 'group.read', 'name' => 'Read Group', 'group_id' => $group->id],
+            ['slug' => 'group.create', 'name' => 'Create Group', 'group_id' => $group->id],
+            ['slug' => 'group.update', 'name' => 'Update Group', 'group_id' => $group->id],
+            ['slug' => 'group.delete', 'name' => 'Delete Group', 'group_id' => $group->id],
+            ['slug' => 'tag.read', 'name' => 'Read Tag', 'group_id' => $group->id],
+            ['slug' => 'tag.create', 'name' => 'Create Tag', 'group_id' => $group->id],
+            ['slug' => 'tag.update', 'name' => 'Update Tag', 'group_id' => $group->id],
+            ['slug' => 'tag.delete', 'name' => 'Delete Tag', 'group_id' => $group->id],
+            ['slug' => 'record-type.create', 'name' => 'Create Record Type', 'group_id' => $group->id],
+            ['slug' => 'record-type.update', 'name' => 'Update Record Type', 'group_id' => $group->id],
+            ['slug' => 'record-type.delete', 'name' => 'Delete Record Type', 'group_id' => $group->id],
+            ['slug' => 'record-type.read', 'name' => 'Read Record Type', 'group_id' => $group->id],
+            ['slug' => 'record-link.create', 'name' => 'Create Record Link', 'group_id' => $group->id],
+            ['slug' => 'record-link.delete', 'name' => 'Delete Record Link', 'group_id' => $group->id],
+            ['slug' => 'record-link.read', 'name' => 'Read Record Link', 'group_id' => $group->id],
+            ['slug' => 'invite-link.create', 'name' => 'Create Invite Link', 'group_id' => $group->id],
+            ['slug' => 'invite-link.delete', 'name' => 'Delete Invite Link', 'group_id' => $group->id],
+            ['slug' => 'invite-link.read', 'name' => 'Read Invite Link', 'group_id' => $group->id],
         ]);
+
+        foreach (Permission::all() as $permission) {
+            $role->permissions()->attach($permission->id);
+        }
 
         $doctor = Doctor::create([
             'name' => 'Dr. Smith',

@@ -10,8 +10,9 @@ use App\Models\InviteLink;
 
 class InviteLinkController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, int $group_id)
     {
+        $request->merge(['group_id' => $group_id]);
         $request->validate([
             'group_id' => ['required', 'integer'],
         ]);
@@ -33,29 +34,9 @@ class InviteLinkController extends Controller
         );
     }
 
-    public function read(Request $request, int $id)
+    public function create(Request $request, int $group_id)
     {
-        $request->merge(['id' => $id]);
-        $request->validate([
-            'id' => ['required', 'integer']
-        ]);
-
-        $inviteLink = InviteLink::find($id);
-        $user = $request->user();
-        $userPermissions = $user->getPermissions($inviteLink->group_id ?? 0);
-
-        if (!$userPermissions->contains('invite-link.read')) {
-            return ApiHelper::errorResponse('You do not have permission to view this invite link', 403);
-        }
-
-        return ApiHelper::successResponse(
-            $inviteLink,
-            'Invite link retrieved successfully'
-        );
-    }
-
-    public function create(Request $request)
-    {
+        $request->merge(['group_id' => $group_id]);
         $request->validate([
             'group_id' => ['required', 'integer'],
         ]);
