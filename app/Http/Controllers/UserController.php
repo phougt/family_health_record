@@ -42,6 +42,7 @@ class UserController extends Controller
             'confirm_password' => ['nullable', 'string', 'min:8', 'same:password'],
             'firstname' => ['nullable', 'string', 'max:255'],
             'lastname' => ['nullable', 'string', 'max:255'],
+            'blood_type_id' => ['nullable', 'integer', 'exists:blood_types,id'],
         ]);
 
         $user->update([
@@ -50,6 +51,7 @@ class UserController extends Controller
             'firstname' => $request->filled('firstname') ? $request->firstname : $user->firstname,
             'lastname' => $request->filled('lastname') ? $request->lastname : $user->lastname,
             'password' => $request->filled('password') ? Hash::make($request->password) : $user->password,
+            'blood_type_id' => $request->filled('blood_type_id') ? $request->blood_type_id : $user->blood_type_id,
         ]);
 
         return ApiHelper::successResponse(
