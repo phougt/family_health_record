@@ -23,7 +23,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/group/{group_id}/hospital', [App\Http\Controllers\HospitalController::class, 'create'])->name('hospital.create');
         Route::get('/group/{group_id}/doctor', [App\Http\Controllers\DoctorController::class, 'index'])->name('doctor.index');
         Route::post('/group/{group_id}/doctor', [App\Http\Controllers\DoctorController::class, 'create'])->name('doctor.create');
-
+        Route::get('/group/{group_id}/role', [App\Http\Controllers\GroupRoleController::class, 'index'])->name('group-role.index');
+        Route::post('/group/{group_id}/role', [App\Http\Controllers\GroupRoleController::class, 'create'])->name('group-role.create');
+        
         Route::get('/tag/{id}', [App\Http\Controllers\TagController::class, 'read'])->name('tag.read');
         Route::put('/tag/{id}', [App\Http\Controllers\TagController::class, 'update'])->name('tag.update');
         Route::delete('/tag/{id}', [App\Http\Controllers\TagController::class, 'delete'])->name('tag.delete');
@@ -44,6 +46,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/doctor/{id}', [App\Http\Controllers\DoctorController::class, 'read'])->name('doctor.read');
         Route::put('/doctor/{id}', [App\Http\Controllers\DoctorController::class, 'update'])->name('doctor.update');
         Route::delete('/doctor/{id}', [App\Http\Controllers\DoctorController::class, 'delete'])->name('doctor.delete');
+
+        Route::get('/group-role/{id}', [App\Http\Controllers\GroupRoleController::class, 'read'])->name('group-role.read');
+        Route::put('/group-role/{id}', [App\Http\Controllers\GroupRoleController::class, 'update'])->name('group-role.update');
+        Route::delete('/group-role/{id}', [App\Http\Controllers\GroupRoleController::class, 'delete'])->name('group-role.delete');
 
         Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
     });
