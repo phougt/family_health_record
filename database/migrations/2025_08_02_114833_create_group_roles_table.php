@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict')->onUpdate('restrict');
+            $table->boolean('is_owner')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
