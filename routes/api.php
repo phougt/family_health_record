@@ -14,6 +14,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::put('/user', [App\Http\Controllers\UserController::class, 'update'])->name('user.update');
         Route::post('/user/{user_id}/group-role', [App\Http\Controllers\UserGroupRoleController::class, 'create'])->name('user-group-role.create');
 
+        Route::get('/group', [App\Http\Controllers\GroupController::class, 'index'])->name('group.index');
+        Route::get('/group/{group_id}', [App\Http\Controllers\GroupController::class, 'read'])->name('group.read');
+        Route::delete('/group/{group_id}', [App\Http\Controllers\GroupController::class, 'delete'])->name('group.delete');
+        Route::post('/group', [App\Http\Controllers\GroupController::class, 'create'])->name('group.create');
+        Route::get('/group/{group_id}/group-profile', [App\Http\Controllers\GroupProfileController::class, 'read'])->name('group-profile.read');
         Route::get('/group/{group_id}/tag', [App\Http\Controllers\TagController::class, 'index'])->name('tag.index');
         Route::post('/group/{group_id}/tag', [App\Http\Controllers\TagController::class, 'create'])->name('tag.create');
         Route::get('/group/{group_id}/record-type', [App\Http\Controllers\RecordTypeController::class, 'index'])->name('record-type.index');
@@ -26,11 +31,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/group/{group_id}/doctor', [App\Http\Controllers\DoctorController::class, 'create'])->name('doctor.create');
         Route::get('/group/{group_id}/role', [App\Http\Controllers\GroupRoleController::class, 'index'])->name('group-role.index');
         Route::post('/group/{group_id}/role', [App\Http\Controllers\GroupRoleController::class, 'create'])->name('group-role.create');
-        
+
         Route::get('/tag/{id}', [App\Http\Controllers\TagController::class, 'read'])->name('tag.read');
         Route::put('/tag/{id}', [App\Http\Controllers\TagController::class, 'update'])->name('tag.update');
         Route::delete('/tag/{id}', [App\Http\Controllers\TagController::class, 'delete'])->name('tag.delete');
-        
+
         Route::get('/record-type/{id}', [App\Http\Controllers\RecordTypeController::class, 'read'])->name('record-type.read');
         Route::put('/record-type/{id}', [App\Http\Controllers\RecordTypeController::class, 'update'])->name('record-type.update');
         Route::delete('/record-type/{id}', [App\Http\Controllers\RecordTypeController::class, 'delete'])->name('record-type.delete');

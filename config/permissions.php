@@ -51,6 +51,13 @@ return [
         'user-group-role' => [
             ["user-group-role.create", "Assign Role To Users", "Assign a role to a user within the group"],
         ],
+        'group-profile' => [
+            ["group-profile.read", "Read Group Profile", "View the group's profile image"],
+        ],
+        'group' => [
+            ["group.read", "Read Group", "View group details"],
+            ["group.delete", "Delete Group", "Delete the group"],
+        ],
     ],
     'groupMember' => [
         'group-role' => [
@@ -74,8 +81,11 @@ return [
         'record-link' => [
             ["record-link.read", "Read Record Link", "View links to records within the group", false],
         ],
-        'permission' => [
-            ["permission.read", "Read Permission", "View permissions within the group", false],
+        'group-profile' => [
+            ["group-profile.read", "Read Group Profile", "View the group's profile image", false],
         ],
+        'group' => [
+            ["group.read", "Read Group", "View group details", false],
+        ]
     ],
 ];
