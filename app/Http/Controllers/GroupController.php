@@ -61,7 +61,7 @@ class GroupController extends Controller
             'group_id' => $group->id,
         ]);
 
-        foreach (config('permissions.groupOwner') as $permissionPrefixs) {
+        foreach (config('default.permissions.groupOwner') as $permissionPrefixs) {
             foreach ($permissionPrefixs as $permission) {
                 $tempPermission = Permission::create([
                     'group_id' => $group->id,
