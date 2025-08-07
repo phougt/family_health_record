@@ -85,7 +85,7 @@ class DatabaseSeeder extends Seeder
         $user->groups()->attach($group->id, ['role_id' => $role->id]);
         $user1->groups()->attach($group1->id, ['role_id' => $role2->id]);
 
-        foreach (config('permissions.groupOwner') as $permissionPrefixs) {
+        foreach (config('default.permissions.groupOwner') as $permissionPrefixs) {
             foreach ($permissionPrefixs as $permission) {
                 $tempPermission = Permission::create([
                     'group_id' => $group->id,
