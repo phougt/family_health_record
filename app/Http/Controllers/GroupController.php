@@ -61,6 +61,12 @@ class GroupController extends Controller
             'group_id' => $group->id,
         ]);
 
+        $memberRole = $group->roles()->create([
+            'name' => 'Member',
+            'is_owner' => false,
+            'group_id' => $group->id,
+        ]);
+
         foreach (config('default.permissions.groupOwner') as $permissionPrefixs) {
             foreach ($permissionPrefixs as $permission) {
                 $tempPermission = Permission::create([
@@ -71,6 +77,19 @@ class GroupController extends Controller
                 ]);
 
                 $ownerRole->permissions()->attach($tempPermission->id);
+            }
+        }
+
+        foreach (config('default.permissions.groupMember') as $permissionPrefixs) {
+            foreach ($permissionPrefixs as $permission) {
+                $tempPermission = Permission::create([
+                    'group_id' => $group->id,
+                    'slug' => $permission[0],
+                    'name' => $permission[1],
+                    'description' => $permission[2]
+                ]);
+
+                $memberRole->permissions()->attach($tempPermission->id);
             }
         }
 
