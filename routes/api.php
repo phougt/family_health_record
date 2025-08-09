@@ -13,6 +13,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/user', [App\Http\Controllers\UserController::class, 'read'])->name('user.read');
         Route::put('/user', [App\Http\Controllers\UserController::class, 'update'])->name('user.update');
         Route::post('/user/{user_id}/group-role', [App\Http\Controllers\UserGroupRoleController::class, 'create'])->name('user-group-role.create');
+        Route::post('/user/invite-link', [App\Http\Controllers\UserGroupController::class, 'create'])->name('user-group.create');
 
         Route::get('/group', [App\Http\Controllers\GroupController::class, 'index'])->name('group.index');
         Route::get('/group/{group_id}', [App\Http\Controllers\GroupController::class, 'read'])->name('group.read');
