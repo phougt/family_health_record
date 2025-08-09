@@ -71,6 +71,10 @@ class GroupRoleController extends Controller
             return ApiHelper::errorResponse('You do not have permission to update this role', 403);
         }
 
+        if ($role->is_owner || $role->name == 'Member') {
+            return ApiHelper::errorResponse('You cannot update this role', 403);
+        }
+
         $role->update([
             'name' => $request->filled('name') ? $request->name : $role->name,
         ]);
@@ -113,6 +117,10 @@ class GroupRoleController extends Controller
         $userPermissions = $user->getPermissions($role->group_id ?? 0);
         if (!$userPermissions->contains('group-role.delete')) {
             return ApiHelper::errorResponse('You do not have permission to delete this role', 403);
+        }
+
+        if ($role->is_owner || $role->name == 'Member') {
+            return ApiHelper::errorResponse('You cannot delete this role', 403);
         }
 
         $role->delete();
