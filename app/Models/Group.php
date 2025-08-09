@@ -34,4 +34,14 @@ class Group extends Model
     {
         return $this->hasMany(InviteLink::class);
     }
+
+    public function doctors()
+    {
+        return $this->hasMany(Doctor::class);
+    }
+
+    public function hospitals()
+    {
+        return $this->hasMany(Hospital::class);
+    }
 }
