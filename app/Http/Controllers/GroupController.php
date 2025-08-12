@@ -13,7 +13,12 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $groups = $user->groups()->paginate($request->input('page', 10));
+        $groups = $user->groups()->paginate(
+            $request->input('per_page', 10),
+            ['*'],
+            'page',
+            $request->input('page', 1)
+        );
 
         return ApiHelper::successResponse(
             $groups,
