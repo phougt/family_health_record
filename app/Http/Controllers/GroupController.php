@@ -20,6 +20,10 @@ class GroupController extends Controller
             $request->input('page', 1)
         );
 
+        foreach ($groups as $group) {
+            $group->group_profile = route('group-profile.read', ['group_id' => $group->id]);
+        }
+
         return ApiHelper::successResponse(
             $groups,
             'Groups retrieved successfully'
