@@ -29,7 +29,7 @@ class ApiHelper
         ], $code);
     }
 
-    public static function errorResponse($message = 'Error', $code = 400, $errors = [])
+    public static function errorResponse($message = 'Error', $code = 400, $errors = null)
     {
         return response()->json([
             'message' => $message,
