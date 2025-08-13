@@ -21,7 +21,7 @@ class GroupController extends Controller
         );
 
         foreach ($groups as $group) {
-            $group->group_profile = route('group-profile.read', ['group_id' => $group->id]);
+            $group->group_profile = $group->group_profile != null ? route('group-profile.read', ['group_id' => $group->id]) : null;
         }
 
         return ApiHelper::successResponse(
