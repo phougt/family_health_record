@@ -13,7 +13,9 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $groups = $user->groups()->paginate(
+        $groups = $user->groups()
+        ->orderByDesc('created_at')
+        ->paginate(
             $request->input('per_page', 10),
             ['*'],
             'page',
@@ -33,8 +35,8 @@ class GroupController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
+            'name' => ['required', 'string', 'max:255', 'min:1'],
+            'description' => ['nullable', 'string', 'max:1000'],
             'group_profile' => ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:1048'],
         ]);
 

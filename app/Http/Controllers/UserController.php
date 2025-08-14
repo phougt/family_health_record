@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function user(Request $request)
+    public function read(Request $request)
     {
         $user = $request->user();
 
