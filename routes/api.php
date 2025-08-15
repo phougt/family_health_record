@@ -12,7 +12,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/user', [App\Http\Controllers\UserController::class, 'read'])->name('user.read');
         Route::put('/user', [App\Http\Controllers\UserController::class, 'update'])->name('user.update');
         Route::post('/user/{user_id}/group-role', [App\Http\Controllers\UserGroupRoleController::class, 'create'])->name('user-group-role.create');
-        Route::post('/user/invite-link', [App\Http\Controllers\UserGroupController::class, 'create'])->name('user-group.create');
+        Route::delete('/user/group/{group_id}', [App\Http\Controllers\UserGroupController::class, 'delete'])->name('user-group.delete');
+        Route::post('/invite-link', [App\Http\Controllers\UserGroupController::class, 'create'])->name('user-group.create');
 
         Route::get('/group', [App\Http\Controllers\GroupController::class, 'index'])->name('group.index');
         Route::get('/group/{group_id}', [App\Http\Controllers\GroupController::class, 'read'])->name('group.read');
@@ -31,6 +32,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/group/{group_id}/doctor', [App\Http\Controllers\DoctorController::class, 'create'])->name('doctor.create');
         Route::get('/group/{group_id}/role', [App\Http\Controllers\GroupRoleController::class, 'index'])->name('group-role.index');
         Route::post('/group/{group_id}/role', [App\Http\Controllers\GroupRoleController::class, 'create'])->name('group-role.create');
+        Route::get('/user/group/{group_id}/permission', [App\Http\Controllers\UserGroupPermissionController::class, 'read'])->name('user-group-permission.read');
 
         Route::get('/tag/{id}', [App\Http\Controllers\TagController::class, 'read'])->name('tag.read');
         Route::put('/tag/{id}', [App\Http\Controllers\TagController::class, 'update'])->name('tag.update');

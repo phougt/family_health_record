@@ -59,8 +59,14 @@ return [
                 ["group.read", "Read Group", "View group details"],
                 ["group.delete", "Delete Group", "Delete the group"],
             ],
+            'user-group-permission' => [
+                ["user-group-permission.read", "Read User Group Permission", "View permissions assigned to users in the group"],
+            ],
         ],
         'groupMember' => [
+            'user-group-permission' => [
+                ["user-group-permission.read", "Read User Group Permission", "View permissions assigned to users in the group", false],
+            ],
             'group-role' => [
                 ["group-role.read", "Read Group Role", "View roles within the group", $isDeletable = false],
             ],

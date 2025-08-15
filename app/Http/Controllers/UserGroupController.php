@@ -20,7 +20,7 @@ class UserGroupController extends Controller
         $inviteLink = InviteLink::where('link', $request->input('invite_link'))->first();
 
         if (!$inviteLink) {
-            return ApiHelper::errorResponse('Invalid invite link', 404);
+            return ApiHelper::errorResponse('Invite link not found', 404);
         }
 
         $group = Group::find($inviteLink->group_id);
@@ -34,6 +34,31 @@ class UserGroupController extends Controller
         return ApiHelper::successResponse(
             null,
             'User added to group successfully'
+        );
+    }
+
+    public function delete(Request $request, $group_id)
+    {
+        $request->merge([
+            'group_id' => $group_id
+        ]);
+
+        $request->validate([
+            'group_id' => ['required', 'integer']
+        ]);
+
+        $user = $request->user();
+        $group = $user->groups()->find($group_id);
+        
+        if (!$group) {
+            return ApiHelper::errorResponse('Group not found', 404);
+        }
+
+        $user->groups()->detach($group_id);
+        
+        return ApiHelper::successResponse(
+            null,
+            'User removed from group successfully'
         );
     }
 }
