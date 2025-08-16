@@ -62,6 +62,9 @@ return [
             'user-group-permission' => [
                 ["user-group-permission.read", "Read User Group Permission", "View permissions assigned to users in the group"],
             ],
+            'group-user' => [
+                ["group-user.read", "Read Group User", "View users in the group"],
+            ],
         ],
         'groupMember' => [
             'user-group-permission' => [
@@ -93,7 +96,10 @@ return [
             ],
             'group' => [
                 ["group.read", "Read Group", "View group details", false],
-            ]
+            ],
+            'group-user' => [
+                ["group-user.read", "Read Group User", "View users in the group", false],
+            ],
         ],
     ],
     'blood-types' => [
