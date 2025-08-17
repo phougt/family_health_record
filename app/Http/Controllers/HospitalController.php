@@ -22,9 +22,13 @@ class HospitalController extends Controller
             return ApiHelper::errorResponse('You do not have permission to view hospitals in this group', 403);
         }
 
-        $paginate = $request->input('page', 10);
         $hospitals = Hospital::where('group_id', $request->group_id)
-            ->paginate($paginate);
+            ->paginate(
+                $request->input('per_page', 10),
+                ['*'],
+                'page',
+                $request->input('page', 1)
+            );
 
         return ApiHelper::successResponse(
             $hospitals,

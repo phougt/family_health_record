@@ -15,13 +15,13 @@ class UserGroupPermissionController extends Controller
         ]);
 
         $user = $request->user();
-        $userPermissions = $user->getPermissions($request->group_id ?? 0);
-        if (!$userPermissions->contains('user-group-permission.read')) {
-            return ApiHelper::errorResponse('You do not have permission to view group permissions', 403);
+        $userPermissions = $user->getPermissions($group_id);
+        if ($userPermissions->isEmpty()) {
+            return ApiHelper::errorResponse('You are not in this group', 403);
         }
 
         return ApiHelper::successResponse(
-            $user->getPermissions($request->group_id),
+            $userPermissions,
             'User group permissions retrieved successfully'
         );
     }

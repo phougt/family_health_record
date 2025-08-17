@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Helpers\ApiHelper;
 use App\Models\Doctor;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class DoctorController extends Controller
 {
@@ -21,9 +22,12 @@ class DoctorController extends Controller
             return ApiHelper::errorResponse('You do not have permission to view doctors in this group', 403);
         }
 
-        $paginate = $request->input('page', 10);
         $doctors = Doctor::where('group_id', $request->group_id)
-            ->paginate($paginate);
+            ->paginate($request->input('per_page', 10),
+            ['*'],
+            'page',
+            $request->input('page', 1)
+        );
 
         return ApiHelper::successResponse(
             $doctors,
