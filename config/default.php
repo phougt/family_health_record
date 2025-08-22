@@ -60,6 +60,7 @@ return [
                 ["group.delete", "Delete Group", "Delete the group"],
             ],
             'group-user' => [
+                ["group-user.delete", "Delete Group User", "Remove a user from the group"],
                 ["group-user.read", "Read Group User", "View users in the group"],
             ],
         ],
@@ -92,6 +93,7 @@ return [
                 ["group.read", "Read Group", "View group details", false],
             ],
             'group-user' => [
+                ["group-user.delete", "Delete Group User", "Remove a user from the group", false],
                 ["group-user.read", "Read Group User", "View users in the group", false],
             ],
         ],
