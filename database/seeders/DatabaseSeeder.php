@@ -98,8 +98,18 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        $hardCodedPermissionIds = [4, 7, 11, 15, 19, 23, 24, 31];
-        $role1->permissions()->attach($hardCodedPermissionIds);
+        foreach (config('default.permissions.groupMember') as $permissionPrefixs) {
+            foreach ($permissionPrefixs as $permission) {
+                $tempPermission = Permission::create([
+                    'group_id' => $group->id,
+                    'slug' => $permission[0],
+                    'name' => $permission[1],
+                    'description' => $permission[2]
+                ]);
+
+                $role1->permissions()->attach($tempPermission->id);
+            }
+        }
 
         $doctor = Doctor::create([
             'name' => 'Dr. Smith',

@@ -7,9 +7,6 @@ return [
                 ["group-role.update", "Update Group Role", "Update an existing role within the group"],
                 ["group-role.delete", "Delete Group Role", "Delete a role within the group"],
                 ["group-role.read", "Read Group Role", "View roles within the group"],
-                ["group.update", "Update Group", "Update group details"],
-                ["group.delete", "Delete Group", "Delete the group"],
-                ["group.read", "Read Group", "View group details"],
             ],
             'hospital' => [
                 ["hospital.create", "Create Hospital", "Create a new hospital within the group"],
@@ -45,9 +42,9 @@ return [
                 ["record-link.delete", "Delete Record Link", "Delete an existing link to a record within the group"],
                 ["record-link.read", "Read Record Link", "View links to records within the group"],
             ],
-            'permission' => [
-                ["permission.read", "Read Permission", "View permissions within the group"],
-                ["permission.create", "Create Permission", "Assign permissions to roles within the group"],
+            'role-permission' => [
+                ["role-permission.read", "Read Permission", "View permissions within the group"],
+                ["role-permission.create", "Create Permission", "Assign permissions to roles within the group"],
             ],
             'user-group-role' => [
                 ["user-group-role.create", "Assign Role To Users", "Assign a role to a user within the group"],
@@ -56,8 +53,9 @@ return [
                 ["group-profile.read", "Read Group Profile", "View the group's profile image"],
             ],
             'group' => [
-                ["group.read", "Read Group", "View group details"],
+                ["group.update", "Update Group", "Update group details"],
                 ["group.delete", "Delete Group", "Delete the group"],
+                ["group.read", "Read Group", "View group details"],
             ],
             'group-user' => [
                 ["group-user.delete", "Delete Group User", "Remove a user from the group"],
@@ -93,7 +91,6 @@ return [
                 ["group.read", "Read Group", "View group details", false],
             ],
             'group-user' => [
-                ["group-user.delete", "Delete Group User", "Remove a user from the group", false],
                 ["group-user.read", "Read Group User", "View users in the group", false],
             ],
         ],
