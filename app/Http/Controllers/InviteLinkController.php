@@ -24,9 +24,14 @@ class InviteLinkController extends Controller
             return ApiHelper::errorResponse('You do not have permission to view invite links in this group', 403);
         }
 
-        $paginate = $request->input('page', 10);
         $inviteLinks = InviteLink::where('group_id', $request->group_id)
-            ->paginate($paginate);
+            ->orderBy('created_at', 'desc')
+            ->paginate(
+                $request->input('per_page', 10),
+                ['*'],
+                'page',
+                $request->input('page', 1)
+            );
 
         return ApiHelper::successResponse(
             $inviteLinks,
