@@ -16,12 +16,10 @@ class GroupProfileController extends Controller
         ]);
 
         $user = $request->user();
-        $userPermissions = $user->getPermissions($request->group_id ?? 0);
-        if (!$userPermissions->contains('group-profile.read')) {
+        $group = $user->groups()->find($request->group_id);
+        if (!$group) {
             return ApiHelper::errorResponse('You do not have permission to view group profile', 403);
         }
-
-        $group = $user->groups()->find($request->group_id);
 
         if (!$group->group_profile ||!Storage::disk('local')->exists($group->group_profile)) {
             return ApiHelper::errorResponse('Group profile not found', 404);

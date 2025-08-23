@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Permission extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['group_id', 'name', 'slug', 'description'];
+    protected $fillable = ['name', 'slug', 'description', 'kind'];
     protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
 
     public function group()

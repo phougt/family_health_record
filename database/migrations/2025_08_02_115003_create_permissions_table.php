@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('group_id')->constrained('groups')->onDelete('restrict')->onUpdate('restrict');
             $table->string('name');
             $table->string('slug');
+            $table->string('kind');
             $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();

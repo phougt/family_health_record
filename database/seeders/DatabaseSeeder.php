@@ -65,11 +65,6 @@ class DatabaseSeeder extends Seeder
             'group_id' => $group1->id,
         ]);
 
-        $role3 = GroupRole::create([
-            'name' => 'Observer 2',
-            'group_id' => $group1->id,
-        ]);
-
         Tag::create([
             'group_id' => $group->id,
             'name' => 'Test Tag',
@@ -85,31 +80,29 @@ class DatabaseSeeder extends Seeder
         $user->groups()->attach($group->id, ['role_id' => $role->id]);
         $user1->groups()->attach($group1->id, ['role_id' => $role2->id]);
 
-        foreach (config('default.permissions.groupOwner') as $permissionPrefixs) {
-            foreach ($permissionPrefixs as $permission) {
+        foreach (config('default.permissions') as $permissionPrefixs) {
+            foreach ($permissionPrefixs as $key => $permission) {
                 $tempPermission = Permission::create([
-                    'group_id' => $group->id,
                     'slug' => $permission[0],
                     'name' => $permission[1],
-                    'description' => $permission[2]
+                    'description' => $permission[2],
+                    'kind' => $key
                 ]);
 
                 $role->permissions()->attach($tempPermission->id);
             }
         }
 
-        foreach (config('default.permissions.groupMember') as $permissionPrefixs) {
-            foreach ($permissionPrefixs as $permission) {
-                $tempPermission = Permission::create([
-                    'group_id' => $group->id,
-                    'slug' => $permission[0],
-                    'name' => $permission[1],
-                    'description' => $permission[2]
-                ]);
-
-                $role1->permissions()->attach($tempPermission->id);
-            }
-        }
+        $role1->permissions()->attach(Permission::whereIn('slug', [
+            'group-role.read',
+            'hospital.read',
+            'doctor.read',
+            'record-type.read',
+            'tag.read',
+            'invite-link.read',
+            'record-link.read',
+            'group-user.read',
+        ])->pluck('id')->toArray());
 
         $doctor = Doctor::create([
             'name' => 'Dr. Smith',

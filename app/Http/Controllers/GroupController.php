@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GroupRole;
 use Illuminate\Http\Request;
 use App\Helpers\ApiHelper;
 use App\Models\Group;
@@ -78,31 +79,20 @@ class GroupController extends Controller
             'group_id' => $group->id,
         ]);
 
-        foreach (config('default.permissions.groupOwner') as $permissionPrefixs) {
-            foreach ($permissionPrefixs as $permission) {
-                $tempPermission = Permission::create([
-                    'group_id' => $group->id,
-                    'slug' => $permission[0],
-                    'name' => $permission[1],
-                    'description' => $permission[2]
-                ]);
+        $ownerRole->permissions()->attach(
+            Permission::all()->pluck('id')->toArray()
+        );
 
-                $ownerRole->permissions()->attach($tempPermission->id);
-            }
-        }
-
-        foreach (config('default.permissions.groupMember') as $permissionPrefixs) {
-            foreach ($permissionPrefixs as $permission) {
-                $tempPermission = Permission::create([
-                    'group_id' => $group->id,
-                    'slug' => $permission[0],
-                    'name' => $permission[1],
-                    'description' => $permission[2]
-                ]);
-
-                $memberRole->permissions()->attach($tempPermission->id);
-            }
-        }
+        $memberRole->permissions()->attach(Permission::whereIn('slug', [
+            'group-role.read',
+            'hospital.read',
+            'doctor.read',
+            'record-type.read',
+            'tag.read',
+            'invite-link.read',
+            'record-link.read',
+            'group-user.read',
+        ])->pluck('id')->toArray());
 
         $user->groups()->attach($group->id, [
             'role_id' => $ownerRole->id
@@ -124,8 +114,8 @@ class GroupController extends Controller
         ]);
 
         $user = $request->user();
-        $userPermissions = $user->getPermissions($group_id ?? 0);
-        if (!$userPermissions->contains('group.read')) {
+        $group = $user->groups()->find($group_id);
+        if (!$group) {
             return ApiHelper::errorResponse('You do not have permission to view this group', 403);
         }
 
@@ -146,8 +136,12 @@ class GroupController extends Controller
         ]);
 
         $user = $request->user();
-        $userPermissions = $user->getPermissions($group_id);
-        if (!$userPermissions->contains('group.delete')) {
+        $isOwner = $user->roles()
+            ->where('group_roles.group_id', $group_id)
+            ->where('group_roles.is_owner', true)
+            ->exists();
+
+        if (!$isOwner) {
             return ApiHelper::errorResponse('You do not have permission to delete this group', 403);
         }
 

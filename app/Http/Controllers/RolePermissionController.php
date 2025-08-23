@@ -20,7 +20,7 @@ class RolePermissionController extends Controller
         $groupRole = GroupRole::find($group_role_id);
         $user = $request->user();
         $userPermissions = $user->getPermissions($groupRole->group->id ?? 0);
-        if (!$userPermissions->contains('role-permission.read')) {
+        if (!$userPermissions->contains('user-group-role.create')) {
             return ApiHelper::errorResponse('You do not have permission to view permissions in this group', 403);
         }
 
@@ -49,7 +49,7 @@ class RolePermissionController extends Controller
         $areValidInputIds = Permission::whereIn('id', $request->input('permission_ids'))->count()
             == count($request->input('permission_ids'));
 
-        if (!$userPermissions->contains('role-permission.create') || !$areValidInputIds) {
+        if (!$userPermissions->contains('user-group-role.create') || !$areValidInputIds) {
             return ApiHelper::errorResponse('You do not have permission to assign permissions to role in this group', 403);
         }
 
