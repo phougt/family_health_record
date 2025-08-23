@@ -19,6 +19,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/group/{group_id}', [App\Http\Controllers\GroupController::class, 'read'])->name('group.read');
         Route::delete('/group/{group_id}', [App\Http\Controllers\GroupController::class, 'delete'])->name('group.delete');
         Route::post('/group', [App\Http\Controllers\GroupController::class, 'create'])->name('group.create');
+        Route::put('/group/{group_id}', [App\Http\Controllers\GroupController::class, 'update'])->name('group.update');
         Route::get('/group/{group_id}/group-profile', [App\Http\Controllers\GroupProfileController::class, 'read'])->name('group-profile.read');
         Route::get('/group/{group_id}/tag', [App\Http\Controllers\TagController::class, 'index'])->name('tag.index');
         Route::post('/group/{group_id}/tag', [App\Http\Controllers\TagController::class, 'create'])->name('tag.create');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GroupRole;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Helpers\ApiHelper;
 use App\Models\Group;
@@ -41,7 +42,7 @@ class GroupController extends Controller
             'group_profile' => ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:1048'],
         ]);
 
-        $groupProfileName = "";
+        $groupProfileName = null;
 
         if ($request->hasFile('group_profile')) {
             $file = $request->file('group_profile');
@@ -106,6 +107,62 @@ class GroupController extends Controller
         );
     }
 
+    public function update (Request $request, int $group_id)
+    {
+        $request->merge(['group_id' => $group_id]);
+        $request->validate([
+            'group_id' => ['required', 'integer'],
+            'name' => ['nullable', 'string', 'max:255', 'min:1'],
+            'description' => ['nullable', 'string', 'max:1000'],
+            'group_profile' => ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:1048'],
+        ]);
+
+        $user = $request->user();
+        $permission = $user->getPermissions($group_id);
+        if (!$permission->contains('group.update')) {
+            return ApiHelper::errorResponse('You do not have permission to update this group', 403);
+        }
+
+        $groupProfileName = null;
+
+        if ($request->hasFile('group_profile')) {
+            $oldProfile = $request->user()->groups()->find($group_id)->group_profile;
+            if (Storage::disk('local')->exists($oldProfile ?? '')) {
+                Storage::disk('local')->delete($oldProfile ?? '');
+            }
+
+            $file = $request->file('group_profile');
+            $path = $uploadStatus = $file->store(
+                'group_profiles',
+                [
+                    'disk' => 'local',
+                    'visibility' => 'private',
+                ]
+            );
+
+            if (!$uploadStatus) {
+                return ApiHelper::errorResponse('Failed to store group profile image', 500);
+            }
+
+            $groupProfileName = $path;
+        }
+
+        $group = Group::find($group_id);
+        $group->name = $request->name ?? $group->name;
+        $group->description = $request->description ?? $group->description;
+        $group->group_profile = $groupProfileName ?? $group->group_profile;
+        $group->save();
+
+        if ($group->group_profile != null) {
+            $group->group_profile = route('group-profile.read', ['group_id' => $group->id]);
+        }
+
+        return ApiHelper::successResponse(
+            $group,
+            'Group updated successfully'
+        );
+    }
+
     public function read(Request $request, int $group_id)
     {
         $request->merge(['group_id' => $group_id]);
@@ -120,7 +177,10 @@ class GroupController extends Controller
         }
 
         $group = $user->groups()->find($group_id);
-        $group->group_profile = route('group-profile.read', ['group_id' => $group->id]);
+
+        if ($group->group_profile != null) {
+            $group->group_profile = route('group-profile.read', ['group_id' => $group->id]);
+        }
 
         return ApiHelper::successResponse(
             $group,
