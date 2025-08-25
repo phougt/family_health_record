@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Helpers\ApiHelper;
 use App\Models\Group;
 use App\Models\Permission;
+use App\Enums\RoleType;
 use Illuminate\Support\Facades\Hash;
 
 class GroupController extends Controller
@@ -16,13 +17,13 @@ class GroupController extends Controller
     {
         $user = $request->user();
         $groups = $user->groups()
-        ->orderByDesc('created_at')
-        ->paginate(
-            $request->input('per_page', 10),
-            ['*'],
-            'page',
-            $request->input('page', 1)
-        );
+            ->orderByDesc('created_at')
+            ->paginate(
+                $request->input('per_page', 10),
+                ['*'],
+                'page',
+                $request->input('page', 1)
+            );
 
         foreach ($groups as $group) {
             $group->group_profile = $group->group_profile != null ? route('group-profile.read', ['group_id' => $group->id]) : null;
@@ -70,14 +71,14 @@ class GroupController extends Controller
 
         $ownerRole = $group->roles()->create([
             'name' => 'Owner',
-            'is_owner' => true,
             'group_id' => $group->id,
+            'type' => RoleType::OWNER
         ]);
 
         $memberRole = $group->roles()->create([
             'name' => 'Member',
-            'is_owner' => false,
             'group_id' => $group->id,
+            'type' => RoleType::MEMBER
         ]);
 
         $ownerRole->permissions()->attach(
@@ -107,7 +108,7 @@ class GroupController extends Controller
         );
     }
 
-    public function update (Request $request, int $group_id)
+    public function update(Request $request, int $group_id)
     {
         $request->merge(['group_id' => $group_id]);
         $request->validate([
@@ -198,7 +199,7 @@ class GroupController extends Controller
         $user = $request->user();
         $isOwner = $user->roles()
             ->where('group_roles.group_id', $group_id)
-            ->where('group_roles.is_owner', true)
+            ->where('type', RoleType::OWNER)
             ->exists();
 
         if (!$isOwner) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleType;
 use Illuminate\Http\Request;
 use App\Helpers\ApiHelper;
 use App\Models\GroupRole;
@@ -17,7 +18,7 @@ class GroupRoleController extends Controller
 
         $user = $request->user();
         $userPermissions = $user->getPermissions($request->group_id ?? 0);
-        if (!$userPermissions->contains('group-role.read')) {
+        if (!$userPermissions->contains('group-role.manage')) {
             return ApiHelper::errorResponse('You do not have permission to view roles in this group', 403);
         }
 
@@ -41,7 +42,7 @@ class GroupRoleController extends Controller
 
         $user = $request->user();
         $userPermissions = $user->getPermissions($request->group_id ?? 0);
-        if (!$userPermissions->contains('group-role.create')) {
+        if (!$userPermissions->contains('group-role.manage')) {
             return ApiHelper::errorResponse('You do not have permission to create roles in this group', 403);
         }
 
@@ -67,7 +68,7 @@ class GroupRoleController extends Controller
         $role = GroupRole::find($id);
         $user = $request->user();
         $userPermissions = $user->getPermissions($role->group_id ?? 0);
-        if (!$userPermissions->contains('group-role.update')) {
+        if (!$userPermissions->contains('group-role.manage')) {
             return ApiHelper::errorResponse('You do not have permission to update this role', 403);
         }
 
@@ -95,7 +96,7 @@ class GroupRoleController extends Controller
         $role = GroupRole::find($id);
         $user = $request->user();
         $userPermissions = $user->getPermissions($role->group_id ?? 0);
-        if (!$userPermissions->contains('group-role.read')) {
+        if (!$userPermissions->contains('group-role.manage')) {
             return ApiHelper::errorResponse('You do not have permission to view this role', 403);
         }
 
@@ -115,13 +116,17 @@ class GroupRoleController extends Controller
         $role = GroupRole::find($id);
         $user = $request->user();
         $userPermissions = $user->getPermissions($role->group_id ?? 0);
-        if (!$userPermissions->contains('group-role.delete')) {
+        if (!$userPermissions->contains('group-role.manage')) {
             return ApiHelper::errorResponse('You do not have permission to delete this role', 403);
         }
 
-        if ($role->is_owner || $role->name == 'Member') {
+        if ($role->type == RoleType::OWNER || $role->name == RoleType::MEMBER) {
             return ApiHelper::errorResponse('You cannot delete this role', 403);
         }
+        
+        $role->users()->update(
+            ['role_id' => null]
+        );
 
         $role->delete();
 

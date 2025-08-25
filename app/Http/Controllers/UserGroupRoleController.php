@@ -2,15 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleType;
 use Illuminate\Http\Request;
 use App\Helpers\ApiHelper;
 use App\Models\User;
 use App\Models\GroupRole;
+use App\Models\Group;
 use App\Models\Permission;
 use Illuminate\Support\Facades\DB;
 
 class UserGroupRoleController extends Controller
 {
+    public function read(Request $request, int $group_id)
+    {
+        $request->merge(['group_id' => $group_id]);
+        $request->validate([
+            'group_id' => ['required', 'integer'],
+        ]);
+
+        $user = $request->user();
+        $group = Group::find($group_id);
+
+        if (!$group) {
+            return ApiHelper::errorResponse('You are not a member of this group', 404);
+        }
+
+        $groupRole = $user->roles()
+            ->where('group_roles.group_id', $group->id)
+            ->first();
+
+        return ApiHelper::successResponse(
+            $groupRole,
+            'User\'s role retrieved successfully'
+        );
+    }
+
     public function create(Request $request, int $user_id)
     {
         $targetUser = User::find($user_id);
@@ -42,8 +68,8 @@ class UserGroupRoleController extends Controller
         if (
             !$targetUserIsInSameGroup
             || ($selfUser->id == $targetUser->id)
-            || (!$selfRole->is_owner && $targetUserRole->is_owner)
-            || ($selfRole->is_owner && $groupRole->is_owner)
+            || (!$selfRole->type == RoleType::OWNER && $targetUserRole->type == RoleType::OWNER)
+            || ($selfRole->type == RoleType::OWNER && $groupRole->type == RoleType::OWNER)
         ) {
             return ApiHelper::errorResponse(
                 'You do not have permission to assign roles to this user in this group',

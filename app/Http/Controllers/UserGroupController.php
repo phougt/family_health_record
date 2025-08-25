@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleType;
 use App\Models\InviteLink;
 use Illuminate\Http\Request;
 use App\Helpers\ApiHelper;
@@ -29,7 +30,15 @@ class UserGroupController extends Controller
             return ApiHelper::errorResponse('You are already a member of this group', 400);
         }
 
-        $user->groups()->attach($group->id, ['role_id' => $group->roles()->where('name', 'Member')->first()->id]);
+        $user->groups()
+            ->attach(
+                $group->id,
+                [
+                    'role_id' => $group->roles()
+                        ->where('type', RoleType::MEMBER)
+                        ->first()->id
+                ]
+            );
 
         return ApiHelper::successResponse(
             null,
@@ -49,13 +58,22 @@ class UserGroupController extends Controller
 
         $user = $request->user();
         $group = $user->groups()->find($group_id);
-        
+
         if (!$group) {
             return ApiHelper::errorResponse('Group not found', 404);
         }
 
+        $userRole = $user->roles()
+            ->where('group_id', $group_id)
+            ->where('type', RoleType::OWNER)
+            ->first();
+
+        if ($userRole->type === RoleType::OWNER) {
+            return ApiHelper::errorResponse('Owners cannot leave the group. Please transfer ownership or delete the group.', 403);
+        }
+
         $user->groups()->detach($group_id);
-        
+
         return ApiHelper::successResponse(
             null,
             'User removed from group successfully'

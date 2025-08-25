@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleType;
 use App\Models\Permission;
 use App\Models\Record;
 use App\Models\RecordType;
@@ -52,17 +53,19 @@ class DatabaseSeeder extends Seeder
         $role = GroupRole::create([
             'name' => 'Owner',
             'group_id' => $group->id,
-            'is_owner' => true,
+            'type' => RoleType::OWNER
         ]);
 
         $role1 = GroupRole::create([
             'name' => 'Member',
             'group_id' => $group->id,
+            'type' => RoleType::MEMBER
         ]);
 
         $role2 = GroupRole::create([
             'name' => 'Observer',
             'group_id' => $group1->id,
+            'type' => RoleType::CUSTOM
         ]);
 
         Tag::create([

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleType;
 use App\Models\GroupRole;
 use Illuminate\Http\Request;
 use App\Helpers\ApiHelper;
@@ -20,7 +21,7 @@ class RolePermissionController extends Controller
         $groupRole = GroupRole::find($group_role_id);
         $user = $request->user();
         $userPermissions = $user->getPermissions($groupRole->group->id ?? 0);
-        if (!$userPermissions->contains('user-group-role.create')) {
+        if (!$userPermissions->contains('group-role.manage')) {
             return ApiHelper::errorResponse('You do not have permission to view permissions in this group', 403);
         }
 
@@ -49,7 +50,7 @@ class RolePermissionController extends Controller
         $areValidInputIds = Permission::whereIn('id', $request->input('permission_ids'))->count()
             == count($request->input('permission_ids'));
 
-        if (!$userPermissions->contains('user-group-role.create') || !$areValidInputIds) {
+        if (!$userPermissions->contains('group-role.manage') || !$areValidInputIds) {
             return ApiHelper::errorResponse('You do not have permission to assign permissions to role in this group', 403);
         }
 
@@ -58,7 +59,7 @@ class RolePermissionController extends Controller
             ->first();
         $targetRole = $groupRole;
 
-        if ((!$selfRole->is_owner && $targetRole->is_owner) || ($selfRole->id == $groupRole->id)) {
+        if ((!$selfRole->type == RoleType::OWNER && $targetRole->type == RoleType::OWNER) || ($selfRole->id == $groupRole->id)) {
             return ApiHelper::errorResponse('You do not have permission to assign permissions to this role in this group', 403);
         }
 

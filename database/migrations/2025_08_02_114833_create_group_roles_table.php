@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\RoleType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +14,8 @@ return new class extends Migration {
         Schema::create('group_roles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('type', RoleType::values());
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict')->onUpdate('restrict');
-            $table->boolean('is_owner')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
