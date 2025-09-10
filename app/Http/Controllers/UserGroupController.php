@@ -64,12 +64,12 @@ class UserGroupController extends Controller
         }
 
         $userRole = $user->roles()
-            ->where('group_id', $group_id)
+            ->where('user_groups.group_id', $group_id)
             ->where('type', RoleType::OWNER)
             ->first();
 
         if ($userRole->type === RoleType::OWNER) {
-            return ApiHelper::errorResponse('Owners cannot leave the group. Please transfer ownership or delete the group.', 403);
+            return ApiHelper::errorResponse('Owners cannot leave the group. Please transfer ownership or archive the group.', 403);
         }
 
         $user->groups()->detach($group_id);

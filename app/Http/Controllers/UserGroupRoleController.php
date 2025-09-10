@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserGroupRoleController extends Controller
 {
-    public function read(Request $request, int $group_id)
+    public function index(Request $request, int $group_id)
     {
         $request->merge(['group_id' => $group_id]);
         $request->validate([
@@ -21,15 +21,17 @@ class UserGroupRoleController extends Controller
         ]);
 
         $user = $request->user();
-        $group = Group::find($group_id);
+        $group = $user->groups()->find($group_id);
 
         if (!$group) {
             return ApiHelper::errorResponse('You are not a member of this group', 404);
         }
 
         $groupRole = $user->roles()
-            ->where('group_roles.group_id', $group->id)
+            ->where('user_groups.group_id', $group->id)
             ->first();
+
+        $groupRole->permissions = $user->getPermissions($group->id);
 
         return ApiHelper::successResponse(
             $groupRole,

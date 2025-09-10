@@ -203,7 +203,7 @@ class GroupController extends Controller
             ->exists();
 
         if (!$isOwner) {
-            return ApiHelper::errorResponse('You do not have permission to delete this group', 403);
+            return ApiHelper::errorResponse('You do not have permission to archive this group', 403);
         }
 
         $group = $user->groups()->find($group_id);

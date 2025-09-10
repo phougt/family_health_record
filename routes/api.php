@@ -34,7 +34,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/group/{group_id}/role', [App\Http\Controllers\GroupRoleController::class, 'index'])->name('group-role.index');
         Route::post('/group/{group_id}/role', [App\Http\Controllers\GroupRoleController::class, 'create'])->name('group-role.create');
         Route::get('/group/{group_id}/user', [App\Http\Controllers\GroupUserController::class, 'index'])->name('group-user.index');
-        Route::get('/user/group/{group_id}/permission', [App\Http\Controllers\UserGroupPermissionController::class, 'read'])->name('user-group-permission.read');
+        Route::get('/user/group/{group_id}/permission', [App\Http\Controllers\UserGroupPermissionController::class, 'index'])->name('user-group-permission.index');
         Route::get('/user/group/{group_id}/group-role', [App\Http\Controllers\UserGroupRoleController::class, 'index'])->name('user-group-role.index');
 
         Route::get('/tag/{id}', [App\Http\Controllers\TagController::class, 'read'])->name('tag.read');

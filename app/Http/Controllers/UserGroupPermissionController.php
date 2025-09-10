@@ -7,7 +7,7 @@ use App\Helpers\ApiHelper;
 
 class UserGroupPermissionController extends Controller
 {
-    public function read(Request $request, $group_id)
+    public function index(Request $request, $group_id)
     {
         $request->merge(['group_id' => $group_id]);
         $request->validate([
