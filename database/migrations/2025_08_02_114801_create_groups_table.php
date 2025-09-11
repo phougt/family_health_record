@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('group_profile')->nullable();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->boolean('is_archived')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

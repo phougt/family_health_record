@@ -28,10 +28,20 @@ class UserGroupRoleController extends Controller
         }
 
         $groupRole = $user->roles()
+            ->with('permissions', function ($query) use ($group) {
+                if ($group->is_archived) {
+                    $query->whereIn('slug', [
+                        'group-role.read',
+                        'hospital.read',
+                        'doctor.read',
+                        'record-type.read',
+                        'tag.read',
+                        'group-user.read',
+                    ]);
+                }
+            })
             ->where('user_groups.group_id', $group->id)
             ->first();
-
-        $groupRole->permissions = $user->getPermissions($group->id);
 
         return ApiHelper::successResponse(
             $groupRole,
@@ -53,7 +63,7 @@ class UserGroupRoleController extends Controller
         $selfUser = $request->user();
         $selfUserPermissions = $selfUser->getPermissions($groupRole->group->id ?? 0);
 
-        if (!$selfUserPermissions->contains('user-group-role.create')) {
+        if (!$selfUserPermissions->contains('group-role.manage')) {
             return ApiHelper::errorResponse('You do not have permission to assign roles to users in this group', 403);
         }
 

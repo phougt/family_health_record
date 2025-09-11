@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Group extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['group_profile', 'name', 'description'];
+    protected $fillable = ['group_profile', 'name', 'description', 'is_archived'];
     protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
+    protected $casts = [
+        'is_archived' => 'boolean',
+    ];
 
     public function users()
     {

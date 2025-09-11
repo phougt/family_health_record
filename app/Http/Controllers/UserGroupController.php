@@ -26,6 +26,10 @@ class UserGroupController extends Controller
 
         $group = Group::find($inviteLink->group_id);
 
+        if (!$group) {
+            return ApiHelper::errorResponse('Group not found', 404);
+        }
+
         if ($user->groups()->where('group_id', $group->id)->exists()) {
             return ApiHelper::errorResponse('You are already a member of this group', 400);
         }

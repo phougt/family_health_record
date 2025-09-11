@@ -81,6 +81,27 @@ class User extends Authenticatable
 
     public function getPermissions(int $groupId)
     {
+        $group = $this->groups()
+            ->where('groups.id', $groupId)
+            ->first();
+
+        if ($group == null) {
+            return collect([]);
+        }
+
+        if ($group->is_archived) {
+            return collect(
+                [
+                    'group-role.read',
+                    'hospital.read',
+                    'doctor.read',
+                    'record-type.read',
+                    'tag.read',
+                    'group-user.read',
+                ]
+            );
+        }
+
         return $this->roles()
             ->where('group_roles.group_id', $groupId)
             ->with('permissions')

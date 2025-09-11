@@ -207,7 +207,8 @@ class GroupController extends Controller
         }
 
         $group = $user->groups()->find($group_id);
-        $group->delete();
+        $group->is_archived = true;
+        $group->save();
 
         return ApiHelper::successResponse(
             null,
