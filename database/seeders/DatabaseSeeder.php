@@ -83,13 +83,13 @@ class DatabaseSeeder extends Seeder
         $user->groups()->attach($group->id, ['role_id' => $role->id]);
         $user1->groups()->attach($group1->id, ['role_id' => $role2->id]);
 
-        foreach (config('default.permissions') as $permissionPrefixs) {
-            foreach ($permissionPrefixs as $key => $permission) {
+        foreach (config('default.permissions') as $permissionPrefix => $permissions) {
+            foreach ($permissions as $permission) {
                 $tempPermission = Permission::create([
                     'slug' => $permission[0],
                     'name' => $permission[1],
                     'description' => $permission[2],
-                    'kind' => $key
+                    'kind' => $permissionPrefix
                 ]);
 
                 $role->permissions()->attach($tempPermission->id);
@@ -97,7 +97,6 @@ class DatabaseSeeder extends Seeder
         }
 
         $role1->permissions()->attach(Permission::whereIn('slug', [
-            'group-role.read',
             'hospital.read',
             'doctor.read',
             'record-type.read',

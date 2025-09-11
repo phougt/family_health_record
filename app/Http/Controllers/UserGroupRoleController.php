@@ -31,7 +31,6 @@ class UserGroupRoleController extends Controller
             ->with('permissions', function ($query) use ($group) {
                 if ($group->is_archived) {
                     $query->whereIn('slug', [
-                        'group-role.read',
                         'hospital.read',
                         'doctor.read',
                         'record-type.read',

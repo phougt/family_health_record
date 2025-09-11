@@ -67,6 +67,7 @@ class GroupController extends Controller
             'name' => $request->name ?? '',
             'description' => $request->description ?? '',
             'group_profile' => $groupProfileName,
+            'is_archived' => false,
         ]);
 
         $ownerRole = $group->roles()->create([
@@ -86,7 +87,6 @@ class GroupController extends Controller
         );
 
         $memberRole->permissions()->attach(Permission::whereIn('slug', [
-            'group-role.read',
             'hospital.read',
             'doctor.read',
             'record-type.read',
