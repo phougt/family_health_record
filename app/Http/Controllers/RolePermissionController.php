@@ -28,7 +28,7 @@ class RolePermissionController extends Controller
         $permissions = DB::table('group_role_permissions')
             ->join('permissions', 'group_role_permissions.permission_id', '=', 'permissions.id')
             ->where('group_role_permissions.role_id', $groupRole->id)
-            ->get(['permissions.id', 'permissions.name as name', 'permissions.description as description']);
+            ->get(['permissions.id', 'permissions.name as name', 'permissions.description as description', 'permissions.kind', 'permissions.slug']);
 
         return ApiHelper::successResponse(
             $permissions,

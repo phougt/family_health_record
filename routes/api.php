@@ -61,8 +61,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/group-role/{id}', [App\Http\Controllers\GroupRoleController::class, 'read'])->name('group-role.read');
         Route::put('/group-role/{id}', [App\Http\Controllers\GroupRoleController::class, 'update'])->name('group-role.update');
         Route::delete('/group-role/{id}', [App\Http\Controllers\GroupRoleController::class, 'delete'])->name('group-role.delete');
-        Route::get('/group-role/{group_role_id}/permission', [App\Http\Controllers\RolePermissionController::class, 'index'])->name('permission.index');
-        Route::post('/group-role/{group_role_id}/permission', [App\Http\Controllers\RolePermissionController::class, 'create'])->name('permission.create');
+        Route::get('/group-role/{group_role_id}/permission', [App\Http\Controllers\RolePermissionController::class, 'index'])->name('role-permission.index');
+        Route::post('/group-role/{group_role_id}/permission', [App\Http\Controllers\RolePermissionController::class, 'create'])->name('role-permission.create');
+        Route::get('/permission', [App\Http\Controllers\PermissionController::class, 'index'])->name('permission.index');
 
         Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
     });

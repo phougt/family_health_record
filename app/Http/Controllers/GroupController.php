@@ -17,6 +17,7 @@ class GroupController extends Controller
     {
         $user = $request->user();
         $groups = $user->groups()
+            ->where('is_archived', $request->input('is_archived', false))
             ->orderByDesc('created_at')
             ->paginate(
                 $request->input('per_page', 10),

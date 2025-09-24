@@ -24,6 +24,7 @@ class GroupRoleController extends Controller
 
         $paginate = $request->input('page', 10);
         $roles = GroupRole::where('group_id', $request->group_id)
+            ->with('permissions')
             ->paginate($paginate);
 
         return ApiHelper::successResponse(
@@ -49,6 +50,7 @@ class GroupRoleController extends Controller
         $role = GroupRole::create([
             'group_id' => $request->group_id,
             'name' => $request->name,
+            'type' => RoleType::CUSTOM,
         ]);
 
         return ApiHelper::successResponse(
