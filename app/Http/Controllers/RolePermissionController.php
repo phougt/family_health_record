@@ -59,7 +59,11 @@ class RolePermissionController extends Controller
             ->first();
         $targetRole = $groupRole;
 
-        if ((!$selfRole->type == RoleType::OWNER && $targetRole->type == RoleType::OWNER) || ($selfRole->id == $groupRole->id)) {
+        if (
+            $targetRole->type == RoleType::OWNER
+            || $targetRole->type == RoleType::MEMBER
+            || $selfRole->id == $groupRole->id
+        ) {
             return ApiHelper::errorResponse('You do not have permission to assign permissions to this role in this group', 403);
         }
 
