@@ -6,6 +6,7 @@ use App\Enums\RoleType;
 use Illuminate\Http\Request;
 use App\Helpers\ApiHelper;
 use App\Models\GroupRole;
+use Illuminate\Support\Facades\DB;
 
 class GroupRoleController extends Controller
 {
@@ -122,13 +123,13 @@ class GroupRoleController extends Controller
             return ApiHelper::errorResponse('You do not have permission to delete this role', 403);
         }
 
-        if ($role->type == RoleType::OWNER || $role->name == RoleType::MEMBER) {
+        if ($role->type == RoleType::OWNER || $role->type == RoleType::MEMBER) {
             return ApiHelper::errorResponse('You cannot delete this role', 403);
         }
         
-        $role->users()->update(
-            ['role_id' => $role->group->roles()->where('type', RoleType::MEMBER)->first()->id]
-        );
+        DB::table('user_groups')
+            ->where('role_id', $role->id)
+            ->update(['role_id' => $role->group->roles()->where('type', RoleType::MEMBER)->first()->id]);
 
         $role->delete();
 

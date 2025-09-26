@@ -14,6 +14,11 @@ class GroupRole extends Model
         'type' => RoleType::class,
     ];
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_groups', 'role_id', 'user_id');
+    }
+
     public function group()
     {
         return $this->belongsTo(Group::class);
