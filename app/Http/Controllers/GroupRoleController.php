@@ -127,7 +127,7 @@ class GroupRoleController extends Controller
         }
         
         $role->users()->update(
-            ['role_id' => null]
+            ['role_id' => $role->group->roles()->where('type', RoleType::MEMBER)->first()->id]
         );
 
         $role->delete();
