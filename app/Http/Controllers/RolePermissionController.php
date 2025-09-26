@@ -42,7 +42,9 @@ class RolePermissionController extends Controller
 
         $request->merge(['group_role_id' => $group_role_id]);
         $request->validate([
-            'permission_ids' => ['required', 'array'],
+            'group_role_id' => ['required', 'integer'],
+            'permission_ids' => ['present', 'array'],
+            'permission_ids.*' => ['integer'],
         ]);
 
         $user = $request->user();
